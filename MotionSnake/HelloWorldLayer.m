@@ -9,9 +9,10 @@
 #import "HelloWorldLayer.h"
 #import "AppDelegate.h"
 
-#define MAX_COLS 11
+#define MAX_COLS 7
 #define MAX_ROWS 10
 #define GRID_SIZE 40
+#define BASE_UPDATE_INTERVAL 0.2
 
 #pragma mark - HelloWorldLayer
 
@@ -67,9 +68,30 @@
         if (_motionManager.isDeviceMotionAvailable)
             [_motionManager startDeviceMotionUpdates];
         
-        [self schedule:@selector(update:) interval:0.5f repeat:kCCRepeatForever delay:0.0f];
+        [self schedule:@selector(update:) interval:BASE_UPDATE_INTERVAL / _currentSpeed repeat:kCCRepeatForever delay:0.0f];
 	}
 	return self;
+}
+
+- (void)setCurrentDirection:(Direction)currentDirection
+{
+    if (currentDirection != _currentDirection) {
+        switch (currentDirection) {
+            case UP:
+                _ball.rotation = 0;
+                break;
+            case DOWN:
+                _ball.rotation = 180;
+                break;
+            case RIGHT:
+                _ball.rotation = 90;
+                break;
+            case LEFT:
+                _ball.rotation = -90;
+        }
+        
+        _currentDirection = currentDirection;
+    }
 }
 
 
@@ -105,11 +127,11 @@
 //    
 //    _ball.position = ccp(newX, newY);
     if (abs(_volecityX) > abs(_volecityY)) {
-        if (_volecityX > 0) _currentDirection = RIGHT;
-        else _currentDirection = LEFT;
+        if (_volecityX > 0) self.currentDirection = RIGHT;
+        else self.currentDirection = LEFT;
     } else {
-        if (_volecityY > 0) _currentDirection = UP;
-        else _currentDirection = DOWN;
+        if (_volecityY > 0) self.currentDirection = UP;
+        else self.currentDirection = DOWN;
     }
     
     switch (_currentDirection) {
