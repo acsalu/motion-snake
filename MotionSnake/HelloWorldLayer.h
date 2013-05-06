@@ -19,13 +19,13 @@ enum Direction {
 typedef enum Direction Direction;
 
 
-@interface HelloWorldLayer : CCLayer
+@interface HelloWorldLayer : CCLayerColor
 
 +(CCScene *) scene;
 
 @property (nonatomic, strong) CCLabelTTF *label;
 @property (nonatomic, strong) CMMotionManager *motionManager;
-@property (nonatomic, strong) CCSprite *ball;
+@property (nonatomic, strong) CCSprite *snakeHead;
 @property (nonatomic) float volecityX;
 @property (nonatomic) float volecityY;
 @property (nonatomic) NSMutableArray *map;
@@ -33,5 +33,10 @@ typedef enum Direction Direction;
 @property (nonatomic) Direction currentDirection;
 @property (nonatomic) int currentRow;
 @property (nonatomic) int currentCol;
+
+@property (nonatomic, strong) NSMutableArray *snake;
+@property (nonatomic, strong) CCSprite *target;
+@property (nonatomic) int targetRow;
+@property (nonatomic) int targetCol;
 
 @end
